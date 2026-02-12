@@ -1,0 +1,25 @@
+﻿@model List<BakerUI.Dto.TestimonialDto.ResultTestimonialDto>
+
+@{
+    var list = Model ?? new();
+}
+
+<div class="owl-carousel testimonial-carousel">
+    @foreach (var item in list)
+    {
+        <div class="testimonial-item bg-white rounded p-4">
+            <div class="d-flex align-items-center mb-4">
+                <img class="flex-shrink-0 rounded-circle border p-1"
+                     src="@(string.IsNullOrWhiteSpace(item.ImageUrl) ? "/img/testimonial-1.jpg" : item.ImageUrl)"
+                     alt="@item.NameSurname"
+                     style="width:60px;height:60px;object-fit:cover;" />
+                <div class="ms-4">
+                    <h5 class="mb-1">@item.NameSurname</h5>
+                    <span>@item.Title</span>
+                </div>
+            </div>
+            <p class="mb-0">@item.Comment</p>
+        </div>
+    }
+</div>
+

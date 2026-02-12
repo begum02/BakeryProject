@@ -1,0 +1,80 @@
+﻿@model BakerUI.Dto.AboutDto.ResultAboutDto
+
+@{
+    var title = Model?.Title;
+    var desc = Model?.Description;
+
+    // Items
+    var items = Model?.AboutItems ?? new List<BakerUI.Dto.AboutDto.AboutItemDto>();
+
+    // Görseller: DTO’da tek ImageUrl var, template’te 2 görsel var.
+    // Şimdilik default görselleri kullanıyoruz (istersen DTO'ya ImageUrl1/2 ekleriz).
+    var img1 = "/img/about-1.jpg";
+    var img2 = "/img/about-2.jpg";
+
+    // Boş gelirse bile bölüm gözüksün
+    var header = "// Hakkımızda";
+    var fallbackTitle = "Ürünlerimizi Sevgiyle Hazırlıyoruz";
+    var fallbackDesc =
+        "Günlük taze üretim, kaliteli malzeme ve usta ellerle sizlere hizmet veriyoruz.";
+}
+
+<div class="container-xxl py-6">
+    <div class="container">
+        <div class="row g-5">
+
+            <!-- SOL: Görseller -->
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="row img-twice position-relative h-100">
+                    <div class="col-6">
+                        <img class="img-fluid rounded" src="@img1" alt="Hakkımızda Görsel 1">
+                    </div>
+                    <div class="col-6 align-self-end">
+                        <img class="img-fluid rounded" src="@img2" alt="Hakkımızda Görsel 2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAĞ: Metin -->
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="h-100">
+                    <p class="text-primary text-uppercase mb-2">@header</p>
+
+                    <h1 class="display-6 mb-4">
+                        @(string.IsNullOrWhiteSpace(title) ? fallbackTitle : title)
+                    </h1>
+
+                    <p>
+                        @(string.IsNullOrWhiteSpace(desc) ? fallbackDesc : desc)
+                    </p>
+
+                    @* Items varsa listele *@
+                    @if (items.Any())
+                    {
+                        <div class="row g-2 mb-4">
+                            @foreach (var it in items)
+                            {
+                                <div class="col-sm-6">
+                                    <i class="fa fa-check text-primary me-2"></i>@it.Text
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        @* Items yoksa 4 placeholder *@
+                        <div class="row g-2 mb-4">
+                            <div class="col-sm-6"><i class="fa fa-check text-primary me-2"></i>Kaliteli Ürünler</div>
+                            <div class="col-sm-6"><i class="fa fa-check text-primary me-2"></i>Özel Üretim</div>
+                            <div class="col-sm-6"><i class="fa fa-check text-primary me-2"></i>Online Sipariş</div>
+                            <div class="col-sm-6"><i class="fa fa-check text-primary me-2"></i>Kapıda Teslimat</div>
+                        </div>
+                    }
+
+                    <a class="btn btn-primary rounded-pill py-3 px-5" href="/About/Index">Devamını Oku</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

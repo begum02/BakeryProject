@@ -1,0 +1,52 @@
+﻿/* Masonry görünüm */
+.gallery-masonry {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-auto-rows: 200px;
+    gap: 18px;
+}
+
+/* Kart */
+.gallery-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    display: block;
+    background: #f3f3f3;
+    text-decoration: none;
+}
+
+/* Görsel */
+.gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1);
+    transition: transform .7s ease;
+}
+
+/* Hover zoom */
+.gallery-card:hover .gallery-img {
+    transform: scale(1.08);
+}
+
+/* Overlay */
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity .25s ease;
+    background: linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,0));
+    display: flex;
+    align-items: flex-end;
+}
+
+/* Hover overlay görünür */
+.gallery-card:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-overlay-inner {
+    width: 100%;
+    padding: 18px;
+}

@@ -1,0 +1,68 @@
+﻿@model List<BakerUI.Dto.MessageDto.ResultMessageDto>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="text-center text-muted py-4">
+        <i class="mdi mdi-email-outline" style="font-size: 2rem;"></i>
+        <p class="mt-2 mb-0">Henüz mesaj yok.</p>
+    </div>
+}
+else
+{
+    <div class="list-group list-group-flush">
+        @foreach (var message in Model)
+        {
+            var isRead = message.IsRead;
+            var badgeClass = isRead ? "badge-secondary" : "badge-danger";
+            var bgClass = isRead ? "" : "bg-light";
+
+            <div class="list-group-item @bgClass px-0 py-3 border-bottom">
+                <div class="d-flex align-items-start">
+
+                    <!-- Avatar -->
+                    <div class="flex-shrink-0">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle bg-gradient-primary text-white"
+                             style="width: 45px; height: 45px;">
+                            <i class="mdi mdi-account" style="font-size: 1.5rem;"></i>
+                        </div>
+                    </div>
+
+                    <!-- İçerik -->
+                    <div class="flex-grow-1 ms-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="mb-0 font-weight-bold">@message.Subject</h6>
+
+                            <span class="badge @badgeClass badge-pill">
+                                @(isRead ? "Okundu" : "Yeni")
+                            </span>
+                        </div>
+
+                        <p class="text-muted small mb-2">
+                            <i class="mdi mdi-email-outline"></i> @message.Email
+                        </p>
+
+                 
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="mdi mdi-clock-outline"></i>
+                                @message.SendDate.ToString("dd.MM.yyyy HH:mm")
+                    </small>
+
+                            <a href="/Message/MessageDetail/@message.MessageId"
+                               class="btn btn-sm btn-outline-primary">
+                                Detay <i class="mdi mdi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="/Message/MessageList" class="btn btn-sm btn-gradient-primary">
+            Tüm Mesajları Gör <i class="mdi mdi-arrow-right ms-1"></i>
+        </a>
+    </div>
+}

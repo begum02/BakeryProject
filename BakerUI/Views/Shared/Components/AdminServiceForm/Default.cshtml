@@ -1,0 +1,69 @@
+﻿@model BakerUI.Dto.ServiceDto.CreateServiceDto
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Servis Ekle</h4>
+
+            <form asp-action="Create" method="post" class="forms-sample">
+
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input asp-for="Title" class="form-control" placeholder="Başlık" />
+                </div>
+
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel 1</label>
+                    <input asp-for="ImageUrl1" class="form-control" placeholder="https://..." />
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel 2</label>
+                    <input asp-for="ImageUrl2" class="form-control" placeholder="https://..." />
+                </div>
+
+                <hr />
+                <h5>Servis Maddeleri</h5>
+
+                <div id="itemList">
+                    <div class="border p-2 mb-2">
+                        <input name="Items[0].Title" class="form-control mb-2" placeholder="Madde başlığı" />
+                        <input name="Items[0].Description" class="form-control mb-2" placeholder="Madde açıklaması" />
+                        <input name="Items[0].Icon" class="form-control" placeholder="fa fa-truck" />
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-sm btn-info" onclick="addItem()">
+                    + Madde Ekle
+                </button>
+
+                <br /><br />
+
+                <button type="submit" class="btn btn-gradient-primary me-2">Kaydet</button>
+                <a asp-action="Index" class="btn btn-light">İptal</a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let itemIndex = 1;
+
+    function addItem() {
+        const html = `
+        <div class="border p-2 mb-2">
+            <input name="Items[${itemIndex}].Title" class="form-control mb-2" placeholder="Madde başlığı" />
+            <input name="Items[${itemIndex}].Description" class="form-control mb-2" placeholder="Madde açıklaması" />
+            <input name="Items[${itemIndex}].Icon" class="form-control" placeholder="fa fa-star" />
+        </div>`;
+
+        document.getElementById("itemList").insertAdjacentHTML("beforeend", html);
+        itemIndex++;
+    }
+</script>

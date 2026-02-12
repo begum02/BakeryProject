@@ -1,0 +1,93 @@
+﻿@model BakerUI.Dto.ServiceDto.UpdateServiceDto
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Hizmet Güncelle</h4>
+            <p class="card-description">Hizmet bilgilerini düzenle</p>
+
+            <form asp-action="EditService" method="post" class="forms-sample">
+
+                <!-- ID göndermezsen API hangisini update edeceğini bilemez -->
+                <input type="hidden" asp-for="ServiceId" />
+
+                <div class="form-group">
+                    <label>Başlık *</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Açıklama *</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel Url 1</label>
+                    <input asp-for="ImageUrl1" class="form-control" />
+                    <span asp-validation-for="ImageUrl1" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel Url 2</label>
+                    <input asp-for="ImageUrl2" class="form-control" />
+                    <span asp-validation-for="ImageUrl2" class="text-danger"></span>
+                </div>
+
+                <div class="form-group form-check mt-3">
+                    <label class="form-check-label">
+                        <input asp-for="IsActive" class="form-check-input" />
+                        Aktif
+                    </label>
+                </div>
+
+                <hr class="my-4" />
+                <h5 class="mb-3">Hizmet Maddeleri</h5>
+
+                @if (Model.Items != null && Model.Items.Any())
+                {
+                    for (int i = 0; i < Model.Items.Count; i++)
+                    {
+                        <div class="border rounded p-3 mb-3">
+                            <!-- Update için item id -->
+                            <input type="hidden" asp-for="Items[@i].ServiceItemId" />
+
+                            <div class="form-group">
+                                <label>Madde Başlığı *</label>
+                                <input asp-for="Items[@i].Title" class="form-control" />
+                                <span asp-validation-for="Items[@i].Title" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Madde Açıklaması *</label>
+                                <textarea asp-for="Items[@i].Description" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Items[@i].Description" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>İkon (fa fa-...)</label>
+                                <input asp-for="Items[@i].Icon" class="form-control" />
+                                <span asp-validation-for="Items[@i].Icon" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="alert alert-info">Henüz madde yok.</div>
+                }
+
+                <button type="submit" class="btn btn-gradient-primary me-2">
+                    Güncelle
+                </button>
+
+                <a asp-action="ServiceList" class="btn btn-light">İptal</a>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@model List<BakerUI.Dto.GalleryDto.ResultGalleryDto>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Galeri Listesi</h4>
+            <p class="card-description">
+                Sistemde kayıtlı galeri görselleri aşağıda yer almaktadır.
+            </p>
+
+            <div class="mb-3 text-end">
+                <a asp-controller="Gallery" asp-action="Create" class="btn btn-gradient-primary">
+                    Yeni Görsel Ekle
+                </a>
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Görsel</th>
+                        <th>Başlık</th>
+                        <th style="width:120px;" class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model ?? new List<BakerUI.Dto.GalleryDto.ResultGalleryDto>())
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl"
+                                         style="width:60px;height:60px;object-fit:cover;border-radius:8px;" />
+                                }
+                                else
+                                {
+                                    <span>Görsel yok</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (!string.IsNullOrWhiteSpace(item.Title))
+                                {
+                                    @item.Title
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Başlık yok</span>
+                                }
+                            </td>
+
+                            <!-- ✅ ICON ACTIONS -->
+                            <td class="text-end">
+                                <a href="/Gallery/Update/@item.GalleryId"
+                                   title="Düzenle"
+                                   class="me-2">
+                                    <i class="mdi mdi-pencil text-primary"></i>
+                                </a>
+
+                                <a href="/Gallery/Delete/@item.GalleryId"
+                                   onclick="return confirm('Görseli silmek istediğine emin misin?');"
+                                   title="Sil">
+                                    <i class="mdi mdi-delete text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

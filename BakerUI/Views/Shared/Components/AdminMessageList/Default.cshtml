@@ -1,0 +1,68 @@
+﻿@model List<BakerUI.Dto.MessageDto.ResultMessageDto>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Mesaj Listesi</h4>
+            <p class="card-description">
+                İletişim formundan gelen mesajlar aşağıda yer almaktadır.
+            </p>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Gönderen</th>
+                        <th>Email</th>
+                        <th>Konu</th>
+                        <th>Tarih</th>
+                        <th>Durum</th>
+                        <th style="width:120px;" class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model ?? new List<BakerUI.Dto.MessageDto.ResultMessageDto>())
+                    {
+                        <tr>
+                            <td>@item.NameSurname</td>
+                            <td>@item.Email</td>
+                            <td>@item.Subject</td>
+                            <td>@item.SendDate.ToString("dd.MM.yyyy HH:mm")</td>
+
+                            <td>
+                                @if (item.IsRead)
+                                {
+                                    <label class="badge badge-success">Okundu</label>
+                                }
+                                else
+                                {
+                                    <label class="badge badge-warning">Yeni</label>
+                                }
+                            </td>
+
+                            <td class="text-end">
+
+                                <!-- DETAY -->
+                                <a asp-controller="Message" 
+                                   asp-action="MessageDetail" 
+                                   asp-route-id="@item.MessageId"
+                                   title="Detay"
+                                   class="me-2">
+                                    <i class="mdi mdi-eye text-info"></i>
+                                </a>
+
+                                <!-- SİL -->
+                                <a href="/Message/DeleteMessage/@item.MessageId"
+                                   onclick="return confirm('Mesajı silmek istediğine emin misin?');"
+                                   title="Sil">
+                                    <i class="mdi mdi-delete text-danger"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

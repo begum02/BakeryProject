@@ -1,0 +1,76 @@
+﻿@model List<BakerUI.Dto.GalleryDto.ResultGalleryDto>
+
+<section class="container-xxl py-5">
+    <div class="container">
+
+        <!-- Başlık -->
+        <div class="text-center mx-auto mb-5" style="max-width: 600px;">
+            <p class="text-primary text-uppercase mb-2">// Galeri</p>
+            <h1 class="display-6 mb-0">Ürün Galerimiz</h1>
+        </div>
+
+        <!-- Filtre Butonları (Dinamik) -->
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+            <button type="button" class="btn btn-primary px-4 py-2 rounded-pill filter-btn active" data-filter="*">
+                Tümü
+            </button>
+
+            @foreach (var category in (ViewBag.Categories as List<BakerUI.Dto.CategoryDto.ResultCategoryDto>) ?? new())
+            {
+                <button type="button" 
+                        class="btn btn-outline-primary px-4 py-2 rounded-pill filter-btn" 
+                        data-filter="@category.CategoryId">
+                    @category.CategoryName
+                </button>
+            }
+        </div>
+
+        <!-- Masonry Grid -->
+        <div class="gallery-masonry">
+            @foreach (var item in (Model ?? new()))
+            {
+                <a href="@(string.IsNullOrWhiteSpace(item.ImageUrl) ? "#" : item.ImageUrl)"
+                   class="gallery-card"
+                   data-category="@item.CategoryId"
+                   title="@item.Title">
+
+                    <img src="@item.ImageUrl" alt="@item.Title" class="gallery-img" />
+
+                    <div class="gallery-overlay">
+                        <div class="gallery-overlay-inner">
+                            <h5 class="text-white mb-1">@item.Title</h5>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <small class="text-primary text-uppercase">
+                                    @(string.IsNullOrWhiteSpace(item.CategoryName) ? "Galeri" : item.CategoryName)
+                                </small>
+                                <i class="fa fa-search text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+
+    </div>
+</section>
+
+<!-- Kısa ve optimize JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.gallery-card');
+
+        buttons.forEach(btn => btn.addEventListener('click', function() {
+            const filter = this.dataset.filter;
+
+            // Buton durumunu güncelle
+            buttons.forEach(b => b.className = 'btn btn-outline-primary px-4 py-2 rounded-pill filter-btn');
+            this.className = 'btn btn-primary px-4 py-2 rounded-pill filter-btn active';
+
+            // Kartları filtrele
+            cards.forEach(card => {
+                card.style.display = (filter === '*' || card.dataset.category === filter) ? 'block' : 'none';
+            });
+        }));
+    });
+</script>

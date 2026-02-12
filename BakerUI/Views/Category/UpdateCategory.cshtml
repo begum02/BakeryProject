@@ -1,0 +1,52 @@
+﻿@model BakerUI.Dto.CategoryDto.UpdateCategoryDto
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Kategori Güncelle</h4>
+            <p class="card-description">Kategori bilgilerini düzenle</p>
+
+            <form asp-action="UpdateCategory" method="post" class="forms-sample">
+
+                <!-- ID göndermezsen API hangisini update edeceğini bilemez -->
+                <input type="hidden" asp-for="CategoryId" />
+
+                <div class="form-group">
+                    <label>Kategori Adı *</label>
+                    <input asp-for="CategoryName" class="form-control" />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Açıklama</label>
+                    <textarea asp-for="CategoryDescription" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="CategoryDescription" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Fiyat Aralığı</label>
+                    <input asp-for="PriceRange" class="form-control" placeholder="Örn: 50₺ - 150₺" />
+                    <span asp-validation-for="PriceRange" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel Url</label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+           
+
+                <button type="submit" class="btn btn-gradient-primary me-2">
+                    Güncelle
+                </button>
+
+                <a asp-action="CategoryList" class="btn btn-light">İptal</a>
+
+            </form>
+        </div>
+    </div>
+</div>

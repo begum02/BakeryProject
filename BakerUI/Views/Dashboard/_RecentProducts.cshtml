@@ -1,0 +1,84 @@
+﻿@model List<BakerUI.Dto.ProductDto.ResultProductDto>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="text-center text-muted py-4">
+        <i class="mdi mdi-information-outline" style="font-size: 2rem;"></i>
+        <p class="mt-2 mb-0">Henüz ürün eklenmemiş.</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 60px;">Görsel</th>
+                    <th>Ürün Adı</th>
+                    <th>Kategori</th>
+                    <th>Fiyat</th>
+                    <th style="width: 80px;">İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl"
+                                     alt="@product.ProductName"
+                                     class="rounded"
+                                     style="width: 50px; height: 50px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <div class="bg-light d-flex align-items-center justify-content-center rounded"
+                                     style="width: 50px; height: 50px;">
+                                    <i class="mdi mdi-image-off text-muted"></i>
+                                </div>
+                            }
+                    </td>
+
+                    <td>
+                        <span class="font-weight-medium">@product.ProductName</span>
+                    </td>
+
+                    <td>
+                        <span class="badge badge-info badge-pill">
+                            @(string.IsNullOrWhiteSpace(product.CategoryName)
+                                                    ? "Kategorisiz"
+                                                    : product.CategoryName)
+                    </span>
+                </td>
+
+                        <td>
+                            <span class="text-success font-weight-bold">
+                                @product.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))
+                            </span>
+                        </td>
+
+                        <td>
+                            <a asp-controller="Product"
+                               asp-action="UpdateProduct"
+                               asp-route-id="@product.ProductId"
+                               class="btn btn-sm btn-outline-primary"
+                               title="Düzenle">
+                                <i class="mdi mdi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                        }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-3">
+        <a asp-controller="Product"
+           asp-action="ProductList"
+           class="btn btn-sm btn-gradient-primary">
+            Tüm Ürünleri Gör <i class="mdi mdi-arrow-right ms-1"></i>
+        </a>
+    </div>
+}

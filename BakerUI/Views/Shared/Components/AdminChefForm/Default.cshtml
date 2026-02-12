@@ -1,0 +1,35 @@
+﻿@model BakerUI.Dto.ChefDto.CreateChefDto
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Şef Ekle</h4>
+            <p class="card-description">Yeni şef oluştur</p>
+
+            <form asp-action="CreateChef" method="post" class="forms-sample">
+
+                <div class="form-group">
+                    <label>Ad Soyad *</label>
+                    <input asp-for="Name" class="form-control" placeholder="Ad Soyad" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Ünvan *</label>
+                    <input asp-for="Title" class="form-control" placeholder="Head Chef / Pastry Chef" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel Url</label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                </div>
+
+        
+                <button type="submit" class="btn btn-gradient-primary me-2">Kaydet</button>
+                <a asp-action="Index" class="btn btn-light">İptal</a>
+
+            </form>
+        </div>
+    </div>
+</div>

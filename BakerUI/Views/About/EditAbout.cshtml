@@ -1,0 +1,117 @@
+﻿@model BakerUI.Dto.AboutDto.UpdateAboutDto
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Hakkımızda Güncelle</h4>
+            <p class="card-description">Hakkımızda bilgilerini düzenle</p>
+
+            <form asp-action="EditAbout" method="post" class="forms-sample">
+
+                <input type="hidden" asp-for="AboutId" />
+
+                <div class="form-group">
+                    <label>Başlık *</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Açıklama *</label>
+                    <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel Url 1</label>
+                    <input asp-for="ImageUrl1" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel Url 2</label>
+                    <input asp-for="ImageUrl2" class="form-control" />
+                </div>
+
+                <hr class="my-4" />
+                <h5 class="mb-3">Maddeler</h5>
+
+                <div id="itemList">
+                    @if (Model.AboutItems != null && Model.AboutItems.Any())
+                    {
+                        for (int i = 0; i < Model.AboutItems.Count; i++)
+                        {
+                            <div class="border rounded p-3 mb-3 about-item">
+                                <input type="hidden" name="AboutItems[@i].AboutItemId" value="@Model.AboutItems[i].AboutItemId" />
+
+                                <div class="form-group mb-0">
+                                    <label>Madde @(i + 1)</label>
+                                    <input name="AboutItems[@i].Text" value="@Model.AboutItems[i].Text" class="form-control" />
+                                </div>
+                            </div>
+                        }
+                    }
+                    @* ✅ Boşsa hiçbir şey gösterme *@
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <button id="btnAddItem" type="button" class="btn btn-sm btn-info" onclick="addItem()">
+                        + Madde Ekle
+                    </button>
+
+                    <small id="itemInfo" class="text-muted"></small>
+                </div>
+
+                <br /><br />
+
+                <button type="submit" class="btn btn-gradient-primary me-2">Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const MAX_ITEMS = 4;
+
+    // ✅ mevcut maddeler varsa say
+    let itemIndex = @(Model?.AboutItems?.Count ?? 0);
+
+    function updateUiState() {
+        const btn = document.getElementById("btnAddItem");
+        const info = document.getElementById("itemInfo");
+
+        info.textContent = `(${itemIndex}/${MAX_ITEMS})`;
+
+        if (itemIndex >= MAX_ITEMS) {
+            btn.disabled = true;
+            btn.classList.add("disabled");
+            info.textContent = `Maksimum ${MAX_ITEMS} madde eklenebilir. (${itemIndex}/${MAX_ITEMS})`;
+        } else {
+            btn.disabled = false;
+            btn.classList.remove("disabled");
+        }
+    }
+
+    function addItem() {
+        if (itemIndex >= MAX_ITEMS) return;
+
+        const div = document.createElement("div");
+        div.className = "border rounded p-3 mb-3 about-item";
+        div.innerHTML = `
+            <input type="hidden" name="AboutItems[${itemIndex}].AboutItemId" value="0" />
+            <div class="form-group mb-0">
+                <label>Madde ${itemIndex + 1}</label>
+                <input name="AboutItems[${itemIndex}].Text" class="form-control" />
+            </div>
+        `;
+        document.getElementById("itemList").appendChild(div);
+
+        itemIndex++;
+        updateUiState();
+    }
+
+    // ✅ sayfa açılınca buton durumu ayarla
+    updateUiState();
+</script>

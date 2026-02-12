@@ -1,0 +1,79 @@
+﻿@model BakerUI.Dto.MessageDto.ResultMessageDto
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Mesaj Detayı";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="card-title mb-0">Mesaj Detayı</h4>
+                <a asp-action="MessageList" class="btn btn-sm btn-outline-secondary">
+                    <i class="mdi mdi-arrow-left"></i> Listeye Dön
+                </a>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted small">Gönderen</label>
+                    <p class="font-weight-bold">@Model.NameSurname</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted small">E-posta</label>
+                    <p class="font-weight-bold">
+                        <a href="mailto:@Model.Email">@Model.Email</a>
+                    </p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted small">Tarih</label>
+                    <p class="font-weight-bold">@Model.SendDate.ToString("dd.MM.yyyy HH:mm")</p>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="text-muted small">Durum</label>
+                    <p>
+                        @if (Model.IsRead)
+                        {
+                            <span class="badge badge-success">Okundu</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-warning">Yeni</span>
+                        }
+                    </p>
+                </div>
+
+                <div class="col-12 mb-3">
+                    <label class="text-muted small">Konu</label>
+                    <p class="font-weight-bold">@Model.Subject</p>
+                </div>
+
+                <div class="col-12">
+                    <label class="text-muted small">Mesaj İçeriği</label>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <p class="mb-0" style="white-space: pre-wrap;">@Model.MessageDetail</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+                <a href="mailto:@Model.Email" class="btn btn-primary">
+                    <i class="mdi mdi-reply"></i> Yanıtla
+                </a>
+                
+                <a asp-action="DeleteMessage" 
+                   asp-route-id="@Model.MessageId" 
+                   onclick="return confirm('Mesajı silmek istediğinize emin misiniz?');"
+                   class="btn btn-danger">
+                    <i class="mdi mdi-delete"></i> Sil
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

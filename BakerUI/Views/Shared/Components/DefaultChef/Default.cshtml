@@ -1,0 +1,54 @@
+﻿@model List<BakerUI.Dto.ChefDto.ResultChefDto>
+
+@{
+    var list = Model ?? new();
+    int i = 0; // wow delay için
+}
+
+<div class="container-xxl py-6">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+            <p class="text-primary text-uppercase mb-2">// Ekibimiz</p>
+            <h1 class="display-6 mb-4">İşinde Uzman Ekibimizle Yanınızdayız</h1>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var item in list)
+            {
+                var delay = (0.1 + (i * 0.2)).ToString("0.0").Replace(",", ".");
+                i++;
+
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="@($"{delay}s")">
+                    <div class="team-item text-center rounded overflow-hidden">
+                        <img class="img-fluid"
+                             src="@(string.IsNullOrWhiteSpace(item.ImageUrl) ? "/img/team-1.jpg" : item.ImageUrl)"
+                             alt="@item.Name"
+                             style="width: 300px; height: 300px; object-fit: cover;" />
+
+                        <div class="team-text">
+                            <div class="team-title">
+                                <h5>@item.Name</h5>
+                                <span>@item.Title</span>
+                            </div>
+
+                            <!-- Sosyal linkler DTO'da yok, şimdilik # bırakıyorum -->
+                            <div class="team-social">
+                                <a class="btn btn-square btn-light rounded-circle" href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-square btn-light rounded-circle" href="#"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-square btn-light rounded-circle" href="#"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @* Eğer hiç kayıt yoksa boş görünmesin *@
+            @if (!list.Any())
+            {
+                <div class="col-12 text-center text-muted">
+                    Şu anda gösterilecek ekip üyesi bulunamadı.
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+﻿@model List<BakerUI.Dto.TestimonialDto.ResultTestimonialDto>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Müşteri Yorumları</h4>
+            <p class="card-description">
+                Sistemde kayıtlı yorumlar aşağıda yer almaktadır.
+            </p>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Fotoğraf</th>
+                        <th>Ad Soyad</th>
+                        <th>Ünvan</th>
+                        <th>Yorum</th>
+                     
+                        <th style="width:120px;">İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model ?? new List<BakerUI.Dto.TestimonialDto.ResultTestimonialDto>())
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl"
+                                         style="width:60px;height:60px;object-fit:cover;border-radius:50%;" />
+                                }
+                                else
+                                {
+                                    <span>Yok</span>
+                                }
+                        </td>
+
+                        <td>@item.NameSurname</td>
+                        <td>@item.Title</td>
+
+                        <!-- uzun yorum tabloyu bozmasın -->
+                        <td>
+                            @(item.Comment.Length > 40
+                                                        ? item.Comment.Substring(0, 40) + "..."
+                                                        : item.Comment)
+                        </td>
+
+                         
+
+                            <td class="text-center">
+                                <a href="/Testimonial/UpdateTestimonial/@item.TestimonialId"
+                                   class="text-warning me-2"
+                                   title="Güncelle">
+                                    <i class="mdi mdi-pencil"></i>
+                                </a>
+
+                                <a href="/Admin/Testimonial/Delete/@item.TestimonialId"
+                                   class="text-danger"
+                                   title="Sil"
+                                   onclick="return confirm('Silmek istediğine emin misin?');">
+                                    <i class="mdi mdi-delete"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

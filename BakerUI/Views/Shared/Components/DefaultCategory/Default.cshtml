@@ -1,0 +1,78 @@
+﻿@model List<BakerUI.Dto.CategoryDto.ResultCategoryDto>
+
+@{
+    var categories = Model ?? new List<BakerUI.Dto.CategoryDto.ResultCategoryDto>();
+    var defaultImg = "https://via.placeholder.com/800x500?text=Category";
+}
+
+<div class="container-xxl bg-light my-6 py-6 pt-0">
+    <div class="container">
+
+        <div class="text-center mx-auto mb-5" style="max-width: 500px;">
+            <p class="text-primary text-uppercase mb-2">// Ürün Kategorileri</p>
+            <h1 class="display-6 mb-4">Fırın Ürünlerimizi Keşfedin</h1>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var item in categories)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="product-item d-flex flex-column bg-white rounded overflow-hidden h-100">
+
+                        <div class="text-center p-4">
+
+                            @* Fiyat *@
+                            @if (!string.IsNullOrWhiteSpace(item.PriceRange))
+                            {
+                                var prices = item.PriceRange.Split('-');
+
+                                <div class="d-inline-block border border-primary rounded-pill px-3 mb-3">
+                                    @if (prices.Length == 2)
+                                    {
+                                        @:₺@prices[0].Trim() - ₺@prices[1].Trim()
+                                    }
+                                    else
+                                    {
+                                        @:₺@item.PriceRange
+                                    }
+                                </div>
+                            }
+
+                            <h3 class="mb-3">@item.CategoryName</h3>
+
+                            @* Açıklama varsa göster *@
+                            @if (!string.IsNullOrWhiteSpace(item.CategoryDescription))
+                            {
+                                <span>@item.CategoryDescription</span>
+                            }
+
+                        </div>
+
+                        <div class="position-relative mt-auto">
+                            <img class="img-fluid"
+                                 src="@(string.IsNullOrWhiteSpace(item.ImageUrl) ? defaultImg : item.ImageUrl)"
+                                 style="width: 408px; height: 326px; object-fit: cover;"
+                                 alt="@item.CategoryName" />
+
+                            <div class="product-overlay">
+                                <a class="btn btn-lg-square btn-outline-light rounded-circle" href="#">
+                                    <i class="fa fa-eye text-primary"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            @* Hiç kategori yoksa *@
+            @if (!categories.Any())
+            {
+                <div class="col-12 text-center text-muted">
+                    Henüz kategori eklenmemiş.
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

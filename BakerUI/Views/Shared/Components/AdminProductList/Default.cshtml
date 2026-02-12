@@ -1,0 +1,68 @@
+﻿@model List<BakerUI.Dto.ProductDto.ResultProductDto>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Ürün Listesi</h4>
+            <p class="card-description">
+                Sistemde kayıtlı ürünler aşağıda yer almaktadır.
+            </p>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Görsel</th>
+                        <th>Ürün Adı</th>
+                        <th>Kategori</th>
+                        <th>Fiyat</th>
+                   
+                        <th style="width:120px;" class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model ?? new List<BakerUI.Dto.ProductDto.ResultProductDto>())
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" style="width:60px;height:60px;object-fit:cover;border-radius:8px;" />
+                                }
+                                else
+                                {
+                                    <span>Görsel yok</span>
+                                }
+                            </td>
+
+                            <td>@item.ProductName</td>
+
+                            <td>@item.CategoryName</td>
+
+                            <td>@item.Price ₺</td>
+
+                           
+
+                            <!-- ✅ ICON ACTIONS -->
+                            <td class="text-end">
+                                <a href="/Product/UpdateProduct/@item.ProductId"
+                                   title="Düzenle"
+                                   class="me-2">
+                                    <i class="mdi mdi-pencil text-primary"></i>
+                                </a>
+
+                                <a href="/Admin/Product/DeleteProduct/@item.ProductId"
+                                   onclick="return confirm('Ürünü silmek istediğine emin misin?');"
+                                   title="Sil">
+                                    <i class="mdi mdi-delete text-danger"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

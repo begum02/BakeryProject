@@ -1,0 +1,266 @@
+﻿@model List<BakerUI.Dto.ProductDto.ResultProductDto>
+
+@{
+    // Controller'dan gelenler
+    var selectedCategory = (ViewBag.SelectedCategory as string) ?? "All";
+    decimal? minPrice = ViewBag.Min as decimal?;
+    decimal? maxPrice = ViewBag.Max as decimal?;
+    var sort = (ViewBag.Sort as string) ?? "new";
+
+    int page = (int)(ViewBag.Page ?? 1);
+    int pageSize = (int)(ViewBag.PageSize ?? 9);
+    int totalCount = (int)(ViewBag.TotalCount ?? 0);
+    int totalPages = (int)(ViewBag.TotalPages ?? 1);
+
+    var categoryCounts = ViewBag.CategoryCounts as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+
+    var start = totalCount == 0 ? 0 : ((page - 1) * pageSize) + 1;
+    var end = Math.Min(page * pageSize, totalCount);
+
+    bool isAll = string.IsNullOrWhiteSpace(selectedCategory) || selectedCategory.Equals("All", StringComparison.OrdinalIgnoreCase);
+}
+
+<section class="container-xxl py-5">
+    <div class="container">
+
+        <!-- Üst başlık -->
+        <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+            <div class="text-muted fst-italic small">
+                @start–@end / @totalCount ürün gösteriliyor
+            </div>
+
+            <!-- Sıralama -->
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-uppercase small text-secondary" style="letter-spacing: .15em;">Sırala:</span>
+
+                <select id="sortSelect" class="form-select form-select-sm" style="width: 220px;">
+                    <option value="new" selected="@(sort == "new")">En Yeniler</option>
+                    <option value="price_asc" selected="@(sort == "price_asc")">Fiyat: Düşükten Yükseğe</option>
+                    <option value="price_desc" selected="@(sort == "price_desc")">Fiyat: Yüksekten Düşüğe</option>
+                    <option value="name_asc" selected="@(sort == "name_asc")">İsim: A-Z</option>
+                    <option value="name_desc" selected="@(sort == "name_desc")">İsim: Z-A</option>
+                </select>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("sortSelect").addEventListener("change", function () {
+                const url = new URL(window.location.href);
+                url.searchParams.set("sort", this.value);
+                url.searchParams.set("page", "1");
+                window.location.href = url.toString();
+            });
+        </script>
+
+        <div class="row g-4">
+            <!-- SOL: Sidebar -->
+            <div class="col-12 col-lg-3">
+
+                <!-- Kategoriler -->
+                <div class="mb-4">
+                    <h6 class="text-uppercase text-secondary mb-3" style="letter-spacing:.2em;">Kategoriler</h6>
+
+                    <ul class="list-unstyled mb-0">
+                        <li class="py-2 border-bottom">
+                            <a class="d-flex justify-content-between align-items-center text-decoration-none @(isAll ? "fw-bold text-primary" : "text-dark")"
+                               href="@Url.Action("Index","Product", new {
+                                    category = "All",
+                                    sort = sort,
+                                    page = 1,
+                                    size = pageSize,
+                                    min = minPrice,
+                                    max = maxPrice
+                               })">
+                                <span>Tüm Ürünler</span>
+                                <span class="badge bg-light text-muted">@totalCount</span>
+                            </a>
+                        </li>
+
+                        @foreach (var c in categoryCounts)
+                        {
+                            string name = (string)c.Name;
+                            int count = (int)c.Count;
+                            var isSelected = selectedCategory.Equals(name, StringComparison.OrdinalIgnoreCase);
+
+                            <li class="py-2 border-bottom">
+                                <a class="d-flex justify-content-between align-items-center text-decoration-none @(isSelected ? "fw-bold text-primary" : "text-dark")"
+                                   href="@Url.Action("Index","Product", new {
+                                        category = name,
+                                        sort = sort,
+                                        page = 1,
+                                        size = pageSize,
+                                        min = minPrice,
+                                        max = maxPrice
+                                   })">
+                                    <span>@name</span>
+                                    <span class="badge bg-light text-muted">@count</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                <!-- Fiyat Aralığı -->
+                <div class="mb-4">
+                    <h6 class="text-uppercase text-secondary mb-3" style="letter-spacing:.2em;">Fiyat Aralığı</h6>
+
+                    <form method="get" action="@Url.Action("Index","Product")" class="p-3 bg-white border rounded">
+                        <input type="hidden" name="category" value="@selectedCategory" />
+                        <input type="hidden" name="sort" value="@sort" />
+                        <input type="hidden" name="page" value="1" />
+                        <input type="hidden" name="size" value="@pageSize" />
+
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input name="min"
+                                       value="@(minPrice?.ToString() ?? "")"
+                                       inputmode="decimal"
+                                       class="form-control form-control-sm"
+                                       placeholder="Min ₺" />
+                            </div>
+                            <div class="col-6">
+                                <input name="max"
+                                       value="@(maxPrice?.ToString() ?? "")"
+                                       inputmode="decimal"
+                                       class="form-control form-control-sm"
+                                       placeholder="Max ₺" />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 btn-sm mt-3">
+                            Uygula
+                        </button>
+
+                        @if (minPrice.HasValue || maxPrice.HasValue)
+                        {
+                            <a class="d-block text-center small mt-2 text-muted"
+                               href="@Url.Action("Index","Product", new {
+                                    category = selectedCategory,
+                                    sort = sort,
+                                    page = 1,
+                                    size = pageSize,
+                                    min = (decimal?)null,
+                                    max = (decimal?)null
+                               })">
+                                Fiyat filtresini temizle
+                            </a>
+                        }
+                    </form>
+                </div>
+
+                <!-- Özel Sipariş -->
+                <div class="p-4 text-center text-white" style="background:#1A1A1A;">
+                    <h5 class="mb-2" style="font-family:'Playfair Display', serif;">Özel Sipariş</h5>
+                    <p class="small text-white-50 mb-3">
+                        Özel günleriniz için kişiye özel pasta ve tatlı tasarımları hazırlıyoruz.
+                    </p>
+                    <button type="button" class="btn btn-outline-light btn-sm px-4">
+                        Teklif Al
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- SAĞ: Ürün Grid -->
+            <div class="col-12 col-lg-9">
+
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="alert alert-light border">
+                        Seçtiğiniz filtrelere uygun ürün bulunamadı.
+                    </div>
+                }
+                else
+                {
+                    <div class="row g-4">
+                        @foreach (var p in Model)
+                        {
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="card h-100 border-0 shadow-sm">
+
+                                    <div class="position-relative" style="aspect-ratio: 1 / 1; overflow:hidden; background:#f3f3f3;">
+                                        <img src="@p.ImageUrl"
+                                             alt="@p.ProductName"
+                                             class="w-100 h-100"
+                                             style="object-fit:cover;" />
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="text-uppercase fw-bold text-primary" style="font-size:11px; letter-spacing:.15em;">
+                                            @(string.IsNullOrWhiteSpace(p.CategoryName) ? "Kategorisiz" : p.CategoryName)
+                                        </div>
+
+                                        <h6 class="mt-2 mb-1" style="font-family:'Playfair Display', serif;">
+                                            @p.ProductName
+                                        </h6>
+
+                                        @if (!string.IsNullOrWhiteSpace(p.Description))
+                                        {
+                                            <div class="text-muted fst-italic small">
+                                                @p.Description
+                                            </div>
+                                        }
+
+                                        <div class="mt-2 fw-semibold text-dark">
+                                            ₺@p.Price.ToString("0.00")
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+                <!-- Sayfalama -->
+                @if (totalPages > 1)
+                {
+                    <div class="d-flex justify-content-center gap-2 mt-5 flex-wrap">
+
+                        <a class="btn btn-outline-secondary btn-sm px-3 @(page == 1 ? "disabled" : "")"
+                           href="@Url.Action("Index","Product", new {
+                                category = selectedCategory,
+                                sort = sort,
+                                page = page - 1,
+                                size = pageSize,
+                                min = minPrice,
+                                max = maxPrice
+                           })">
+                            <i class="fa fa-chevron-left"></i>
+                        </a>
+
+                        @for (int i = 1; i <= totalPages; i++)
+                        {
+                            <a class="btn btn-sm px-3 @(i == page ? "btn-dark" : "btn-outline-secondary")"
+                               href="@Url.Action("Index","Product", new {
+                                    category = selectedCategory,
+                                    sort = sort,
+                                    page = i,
+                                    size = pageSize,
+                                    min = minPrice,
+                                    max = maxPrice
+                               })">
+                                @i
+                            </a>
+                        }
+
+                        <a class="btn btn-outline-secondary btn-sm px-3 @(page == totalPages ? "disabled" : "")"
+                           href="@Url.Action("Index","Product", new {
+                                category = selectedCategory,
+                                sort = sort,
+                                page = page + 1,
+                                size = pageSize,
+                                min = minPrice,
+                                max = maxPrice
+                           })">
+                            <i class="fa fa-chevron-right"></i>
+                        </a>
+
+                    </div>
+                }
+
+            </div>
+        </div>
+
+    </div>
+</section>

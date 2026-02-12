@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section PageCss {
+    
+    <link rel="stylesheet" href="~/css/product.css" />
+}
+
+@* ✅ Component'i query string parametreleriyle çağır *@
+@await Component.InvokeAsync("DefaultProduct", new
+{
+    category = ViewBag.Category as string,
+    min = ViewBag.Min as decimal?,
+    max = ViewBag.Max as decimal?,
+    sort = ViewBag.Sort as string,
+    page = ViewBag.Page ?? 1,
+    size = ViewBag.PageSize ?? 9
+})
+
+

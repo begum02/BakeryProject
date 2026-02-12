@@ -1,0 +1,46 @@
+﻿@model BakerUI.Dto.ChefDto.UpdateChefDto
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Şef Güncelle</h4>
+            <p class="card-description">Şef bilgilerini düzenle</p>
+
+            <form asp-action="UpdateChef" method="post" class="forms-sample">
+
+                <!-- ID göndermezsen API hangisini update edeceğini bilemez -->
+                <input type="hidden" asp-for="ChefId" />
+
+                <div class="form-group">
+                    <label>Ad Soyad *</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Ünvan *</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel Url</label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                </div>
+
+     
+
+                <button type="submit" class="btn btn-gradient-primary me-2">
+                    Güncelle
+                </button>
+
+                <a asp-action="ChefList" class="btn btn-light">İptal</a>
+
+            </form>
+        </div>
+    </div>
+</div>

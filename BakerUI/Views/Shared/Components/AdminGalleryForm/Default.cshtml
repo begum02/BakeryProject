@@ -1,0 +1,38 @@
+﻿@model BakerUI.Dto.GalleryDto.CreateGalleryDto
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Galeri Görseli Ekle</h4>
+            <p class="card-description">Yeni galeri öğesi oluştur</p>
+
+            <form asp-controller="Gallery" asp-action="CreateGallery" method="post" class="forms-sample">
+
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input asp-for="Title" class="form-control" placeholder="Örn: Chocolate Cake" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel URL *</label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+    
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.Categories">
+                        <option value="">-- Kategori Seçin (Opsiyonel) --</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-gradient-primary me-2">Kaydet</button>
+                <a asp-controller="Gallery" asp-action="GalleryList" class="btn btn-light">İptal</a>
+
+            </form>
+        </div>
+    </div>
+</div>

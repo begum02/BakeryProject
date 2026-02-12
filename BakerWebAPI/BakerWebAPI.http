@@ -1,0 +1,6 @@
+@BakerWebAPI_HostAddress = http://localhost:5235
+
+GET {{BakerWebAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

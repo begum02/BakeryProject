@@ -1,0 +1,59 @@
+﻿@model BakerUI.Dto.MessageDto.CreateMessageDto
+
+<div class="container">
+    <div class="text-center mx-auto mb-5" style="max-width: 500px;">
+        <p class="text-primary text-uppercase mb-2">// İletişim</p>
+        <h1 class="display-6 mb-4">Sorularınız için bizimle iletişime geçebilirsiniz</h1>
+    </div>
+
+    <div class="row g-0 justify-content-center">
+        <div class="col-lg-8">
+
+            <form asp-controller="Message" asp-action="CreateMessage" method="post">
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="NameSurname" class="form-control" placeholder="Adınız Soyadınız">
+                            <label>Adınız Soyadınız</label>
+                            <span asp-validation-for="NameSurname" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input asp-for="Email" type="email" class="form-control" placeholder="E-posta Adresiniz">
+                            <label>E-posta Adresiniz</label>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <input asp-for="Subject" class="form-control" placeholder="Konu">
+                            <label>Konu</label>
+                            <span asp-validation-for="Subject" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-floating">
+                            <textarea asp-for="MessageDetail" class="form-control" placeholder="Mesajınız" style="height: 200px"></textarea>
+                            <label>Mesajınız</label>
+                            <span asp-validation-for="MessageDetail" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-center">
+                        <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">
+                            Mesaj Gönder
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+

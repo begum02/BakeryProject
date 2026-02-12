@@ -1,0 +1,40 @@
+﻿@model BakerUI.Dto.GalleryDto.UpdateGalleryDto
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="col-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Galeri Güncelle</h4>
+            <p class="card-description">Galeri görsel bilgilerini düzenle</p>
+
+            <form asp-action="UpdateGallery" method="post" class="forms-sample">
+
+                <!-- ID göndermezsen API hangisini update edeceğini bilemez -->
+                <input type="hidden" asp-for="GalleryId" />
+
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel Url *</label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-gradient-primary me-2">
+                    Güncelle
+                </button>
+
+                <a asp-action="Index" class="btn btn-light">İptal</a>
+                @* Eğer liste sayfan GalleryList ise:
+                   <a asp-action="GalleryList" class="btn btn-light">İptal</a>
+                *@
+            </form>
+        </div>
+    </div>
+</div>

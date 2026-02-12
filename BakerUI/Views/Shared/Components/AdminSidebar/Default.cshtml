@@ -1,0 +1,145 @@
+﻿<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+
+        <!-- PROFİL -->
+        <li class="nav-item nav-profile">
+            <a href="#" class="nav-link">
+                <div class="nav-profile-text d-flex flex-column">
+                    <span class="font-weight-bold mb-2">EkmekSepeti Admin</span>
+                    <span class="text-secondary text-small">Yönetim Paneli</span>
+                </div>
+            </a>
+        </li>
+
+        <!-- ANASAYFA -->
+        <li class="nav-item">
+            <a class="nav-link" href="/Dashboard/Index">
+                <span class="menu-title">Anasayfa</span>
+                <i class="mdi mdi-view-dashboard menu-icon"></i>
+            </a>
+        </li>
+        <!--Hakkımızda-->
+        <li class="nav-item">
+            <a class="nav-link" href="/About/EditAbout">
+                <span class="menu-title">Hakkımızda</span>
+                <i class="mdi mdi-information menu-icon"></i>
+            </a>
+        </li>
+
+        <!-- KATEGORİLER -->
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#categoryMenu">
+                <span class="menu-title">Kategoriler</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-shape menu-icon"></i>
+            </a>
+
+            <div class="collapse" id="categoryMenu">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Category/CategoryList">Liste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Category/CreateCategory">Yeni Ekle</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- HİZMETLER -->
+        <li class="nav-item">
+            <a class="nav-link" href="/Service/EditService">
+                <span class="menu-title">Servisler</span>
+                <i class="mdi mdi-room-service menu-icon"></i>
+            </a>
+        </li>
+
+        <!-- ŞEFLER -->
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#chefMenu">
+                <span class="menu-title">Şefler</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-chef-hat menu-icon"></i>
+            </a>
+
+            <div class="collapse" id="chefMenu">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Chef/ChefList">Liste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Chef/CreateChef">Yeni Ekle</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- REFERANSLAR -->
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#refMenu">
+                <span class="menu-title">Referanslar</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-star-circle menu-icon"></i>
+            </a>
+
+            <div class="collapse" id="refMenu">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Testimonial/TestimonialList">Liste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Testimonial/CreateTestimonial">Yeni Ekle</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- MESAJLAR -->
+        <li class="nav-item">
+            <a class="nav-link" href="/Message/MessageList">
+                <span class="menu-title">Mesajlar</span>
+                <i class="mdi mdi-message-text menu-icon"></i>
+            </a>
+        </li>
+        
+        <!-- ÜRÜNLER -->
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#productMenu">
+                <span class="menu-title">Ürünler</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-bread-slice menu-icon"></i>
+            </a>
+
+            <div class="collapse" id="productMenu">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Product/ProductList">Liste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Product/CreateProduct">Yeni Ekle</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- GALERİ -->
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#galleryMenu">
+                <span class="menu-title">Galeri</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-image-multiple menu-icon"></i>
+            </a>
+
+            <div class="collapse" id="galleryMenu">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Gallery/GalleryList">Liste</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Gallery/CreateGallery">Yeni Ekle</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</nav>

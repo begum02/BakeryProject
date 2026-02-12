@@ -1,0 +1,224 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Dashboard";
+    
+    // ✅ Grafik verisi (server-side'dan geliyor)
+    var categoryStats = ViewBag.CategoryStats as List<object> ?? new List<object>();
+}
+
+<div class="row">
+    <!-- İstatistik Kartları -->
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="card-title text-muted">Toplam Ürün</p>
+                        <h3 class="font-weight-bold">@ViewBag.ProductCount</h3>
+                    </div>
+                    <div class="icon-rounded-primary">
+                        <i class="mdi mdi-shopping text-primary icon-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="card-title text-muted">Hizmetler</p>
+                        <h3 class="font-weight-bold">@ViewBag.ServiceCount</h3>
+                    </div>
+                    <div class="icon-rounded-success">
+                        <i class="mdi mdi-wrench text-success icon-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="card-title text-muted">Galeri</p>
+                        <h3 class="font-weight-bold">@ViewBag.GalleryCount</h3>
+                    </div>
+                    <div class="icon-rounded-info">
+                        <i class="mdi mdi-image text-info icon-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <p class="card-title text-muted">Mesajlar</p>
+                        <h3 class="font-weight-bold">
+                            @ViewBag.MessageCount
+                            @if (ViewBag.UnreadMessageCount > 0)
+                            {
+                                <span class="badge badge-danger">@ViewBag.UnreadMessageCount yeni</span>
+                            }
+                        </h3>
+                    </div>
+                    <div class="icon-rounded-warning">
+                        <i class="mdi mdi-email text-warning icon-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Son Ürünler -->
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">
+                    <i class="mdi mdi-shopping"></i> Son Eklenen Ürünler
+                </h4>
+                @await Html.PartialAsync("_RecentProducts", ViewBag.RecentProducts as List<BakerUI.Dto.ProductDto.ResultProductDto>)
+            </div>
+        </div>
+    </div>
+
+    <!-- Son Mesajlar -->
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">
+                    <i class="mdi mdi-email"></i> Son Gelen Mesajlar
+                </h4>
+                @await Html.PartialAsync("_RecentMessages", ViewBag.RecentMessages as List<BakerUI.Dto.MessageDto.ResultMessageDto>)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Grafik (Chart.js - AJAX YOK, server-side veri) -->
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">
+                    <i class="mdi mdi-chart-bar"></i> Kategori Bazlı Ürün Dağılımı
+                </h4>
+                
+                @if (categoryStats.Any())
+                {
+                    <div class="d-flex justify-content-start">
+                        <div style="position: relative; height: 300px; width: 60%; max-width: 600px;">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="mdi mdi-information-outline"></i>
+                        Henüz kategori verisi bulunmuyor.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    @if (categoryStats.Any())
+    {
+        <script>
+            const chartData = @Html.Raw(Json.Serialize(categoryStats));
+            
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.map(d => d.category),
+                    datasets: [{
+                        label: 'Ürün Sayısı',
+                        data: chartData.map(d => d.count),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 5,
+                        barPercentage: 0.5,
+                        categoryPercentage: 1.0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 1.5,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                precision: 0
+                            },
+                            grid: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 12
+                                },
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            padding: 12,
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    }
+}
